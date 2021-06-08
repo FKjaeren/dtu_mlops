@@ -5,16 +5,17 @@ https://github.com/Jackson-Kang/Pytorch-VAE-tutorial/blob/master/01_Variational_
 A simple implementation of Gaussian MLP Encoder and Decoder trained on MNIST
 """
 import torch
+import pdb
 import torch.nn as nn
 from torchvision.utils import save_image
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
-
+#pdb.set_trace()
 # Model Hyperparameters
 dataset_path = '~/datasets'
-cuda = True
+cuda = False
 DEVICE = torch.device("cuda" if cuda else "cpu")
 batch_size = 100
 x_dim  = 784
@@ -46,14 +47,14 @@ class Encoder(nn.Module):
         h_       = torch.relu(self.FC_input(x))
         mean     = self.FC_mean(h_)
         log_var  = self.FC_var(h_)                     
-                                                      
-        z        = self.reparameterization(mean, log_var)
+        var = torch.exp(0.5*log_var)                                       
+        z        = self.reparameterization(mean, var)
         
         return z, mean, log_var
        
     def reparameterization(self, mean, var):
         epsilon = torch.randn(*var.shape)
-        
+
         z = mean + var*epsilon
         
         return z
@@ -62,7 +63,7 @@ class Decoder(nn.Module):
     def __init__(self, latent_dim, hidden_dim, output_dim):
         super(Decoder, self).__init__()
         self.FC_hidden = nn.Linear(latent_dim, hidden_dim)
-        self.FC_output = nn.Linear(latent_dim, output_dim)
+        self.FC_output = nn.Linear(hidden_dim, output_dim)
         
     def forward(self, x):
         h     = torch.relu(self.FC_hidden(x))
@@ -93,7 +94,7 @@ BCE_loss = nn.BCELoss()
 
 def loss_function(x, x_hat, mean, log_var):
     reproduction_loss = nn.functional.binary_cross_entropy(x_hat, x, reduction='sum')
-    KLD      = - 0.5 * torch.sum(1+ log_var - mean.pow(2) - log_var.exp())
+    KLD      = - 0.5 * torch.sum(1 + log_var - mean.pow(2) - log_var.exp())
 
     return reproduction_loss + KLD
 
@@ -105,6 +106,7 @@ model.train()
 for epoch in range(epochs):
     overall_loss = 0
     for batch_idx, (x, _) in enumerate(train_loader):
+        optimizer.zero_grad()
         x = x.view(batch_size, x_dim)
         x = x.to(DEVICE)
 

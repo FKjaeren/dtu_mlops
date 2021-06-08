@@ -1,0 +1,5 @@
+name: MLOps_Day_2
+channels:
+  - conda-forge
+  - defaults
+prefix: /Users/frederikkjaer/.conda/envs/MLOps_Day_2

@@ -1,0 +1,22 @@
+{
+    "os": "macOS-10.15.5-x86_64-i386-64bit",
+    "python": "3.9.4",
+    "heartbeatAt": "2021-06-08T09:44:55.357208",
+    "startedAt": "2021-06-08T09:44:51.864120",
+    "docker": null,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops/03_debuggin_and_visualization/TrainingFile.py",
+    "codePath": "03_debuggin_and_visualization/TrainingFile.py",
+    "git": {
+        "remote": "https://github.com/FKjaeren/dtu_mlops.git",
+        "commit": "f601f8341b982cd59fc8e632029da0a2ed9060c4"
+    },
+    "email": "f.kjaer@icloud.com",
+    "root": "/Users/frederikkjaer/Documents/DTU/8Semester/MLOps/dtu_mlops",
+    "host": "frederiksmbp47.clients.wireless.dtu.dk",
+    "username": "frederikkjaer",
+    "executable": "/Users/frederikkjaer/opt/miniconda3/envs/MLOps_Day_2/bin/python"
+}

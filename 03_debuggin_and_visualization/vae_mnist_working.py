@@ -5,6 +5,8 @@ https://github.com/Jackson-Kang/Pytorch-VAE-tutorial/blob/master/01_Variational_
 A simple implementation of Gaussian MLP Encoder and Decoder trained on MNIST
 """
 import torch
+import cProfile
+import re
 import torch.nn as nn
 from torchvision.utils import save_image
 from torchvision.datasets import MNIST
@@ -14,7 +16,7 @@ from torch.utils.data import DataLoader
 
 # Model Hyperparameters
 dataset_path = '~/datasets'
-cuda = True
+cuda = False
 DEVICE = torch.device("cuda" if cuda else "cpu")
 batch_size = 100
 x_dim  = 784
