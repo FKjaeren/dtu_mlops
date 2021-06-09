@@ -1,12 +1,15 @@
-import sys
 import argparse
+import os
+import sys
+
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import os
-import matplotlib.pyplot as plt
-from model import MyAwesomeModel
-from torch import nn, optim
 import torch.nn.functional as F
+from torch import nn, optim
+
+from model import MyAwesomeModel
+
 
 class TrainOREvaluate(object):
     """ Helper class that will help launch class methods as commands
@@ -21,12 +24,10 @@ class TrainOREvaluate(object):
         args = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
             print('Unrecognized command')
-            
             parser.print_help()
             exit(1)
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
-    
     def train(self):
         loss_list = []
         print("Training day and night")
@@ -35,7 +36,6 @@ class TrainOREvaluate(object):
         # add any additional argument that you want
         args = parser.parse_args(sys.argv[2:])
         print(args)
-        
         # TODO: Implement training loop here
         model = MyAwesomeModel()
         criterion = nn.NLLLoss()
