@@ -41,10 +41,12 @@ class TrainOREvaluate(object):
         criterion = nn.NLLLoss()
         optimizer = optim.Adam(model.parameters(), lr=float(args.lr))
         #print(os.listdir('./MyNetworkDay1/data/processed)
-        train_set = torch.load('../../data/processed/training.pt')
+        train_data, train_label = torch.load('../../data/processed/training.pt')
+        train_data = torch.unsqueeze(train_data,1)
+        trainloader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(*(train_data,train_label)), batch_size=64, shuffle=True)
         #import pdb
         #pdb.set_trace()
-        trainloader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(*train_set), batch_size=64, shuffle=True)
         epochs = 5
         steps = 0
         model.train()
@@ -84,8 +86,10 @@ class TrainOREvaluate(object):
         # TODO: Implement evaluation logic here
         if args.load_model_from:
             model = torch.load(args.load_model_from)
-        test_set = torch.load('../../data/processed/test.pt')
-        testloader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(*test_set), batch_size=64, shuffle=True)
+        test_data, test_label = torch.load('../../data/processed/test.pt')
+        test_data = torch.unsqueeze(test_data,1)
+        testloader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(*(test_data,test_label)), batch_size=64, shuffle=True)
         model.eval()
         with torch.no_grad():
             for images, labels in testloader:
