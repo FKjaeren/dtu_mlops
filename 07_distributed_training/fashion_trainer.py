@@ -72,7 +72,7 @@ def train_and_test():
     # TODO: Transfering model to GPU if available
     model = FashionCNN()
     model = model.to(device)
-    model = torch.nn.DataParallel(model)
+    model = torch.nn.DataParallel(model, device_ids = [0])
 
     error = nn.CrossEntropyLoss()
     
