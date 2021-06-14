@@ -3,6 +3,7 @@ Credit to: https://www.kaggle.com/pankajj/fashion-mnist-with-pytorch-93-accuracy
 """
 import torch
 import torch.nn as nn
+import time
 
 from torchvision.datasets import FashionMNIST
 import torchvision.transforms as transforms
@@ -70,14 +71,15 @@ def train_and_test():
     
     # TODO: Transfering model to GPU if available
     model = FashionCNN()
-    model = ...
-    
+    model = model.to(device)
+    model = torch.nn.DataParallel(model)
+
     error = nn.CrossEntropyLoss()
     
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     print(model)
     
-    num_epochs = 20
+    num_epochs = 3
     # Lists for visualization of loss and accuracy 
     loss_list = []
     iteration_list = []
@@ -86,11 +88,15 @@ def train_and_test():
     # Lists for knowing classwise accuracy
     predictions_list = []
     labels_list = []
-    
+    res = [ ]
+
     for epoch in range(num_epochs):
+        start = time.time()
+
         for batch_idx, (images, labels) in enumerate(train_loader):
+
             # TODO: Transfering images and labels to GPU if available
-            images, labels = ...
+            images, labels = images.to(device), labels.to(device)
 
             # Forward pass 
             outputs = model(images)
@@ -113,7 +119,7 @@ def train_and_test():
             
                 for images, labels in test_loader:
                     # TODO: Transfering images and labels to GPU if available
-                    images, labels = ...
+                    images, labels = images.to(device), labels.to(device)
                     labels_list.append(labels)
                 
                     outputs = model(images)
@@ -131,7 +137,10 @@ def train_and_test():
             
             if not (count % 500):
                 print("Iteration: {}, Loss: {}, Accuracy: {}%".format(count, loss.data, accuracy))
-                
+        end = time.time()
+        res.append(end - start)
+    res = np.array(res)
+    print('Timing:', np.mean(res),'+-',np.std(res))
     class_correct = [0. for _ in range(10)]
     total_correct = [0. for _ in range(10)]
     
