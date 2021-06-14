@@ -19,7 +19,6 @@ class LFWDataset(Dataset):
             for f in os.listdir(folders_dir[i]):
                 if os.path.isfile(os.path.join(folders_dir[i], f)):
                     images_dir.append(os.path.join(folders_dir[i], f)) #for f in os.listdir(folders_dir[i]) if os.path.isfile(os.path.join(folders_dir[i], f))])
-        images_dir = images_dir[0:32]
         self.transform = transform
         self.images = images_dir
         
@@ -51,7 +50,7 @@ if __name__ == '__main__':
     dataset = LFWDataset(args.path_to_folder, lfw_trans)
     
     # Define dataloader
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=False,
+    dataloader = DataLoader(dataset, batch_size=500, shuffle=False,
                             num_workers=args.num_workers)
     
     if args.visualize_batch:
