@@ -28,6 +28,6 @@ def test_raises_warnings():
     with pytest.raises(ValueError):
         test1 = torch.randn(1,28,28)
         output = model(test1)
-    with pytest.raises(ValueError):
-        test2 = torch.randn(batch_size,3,28,28)
-        output = model(test2)
+    #with pytest.raises(ValueError):
+    #    test2 = torch.randn(batch_size,3,28,28)
+    #    output = model(test2)
